@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        {% load static %}
+        <link rel="icon" href="{% static 'img/favicon.ico' %}">
+
+        <style media="screen">
+            * {
+                /* outline: 1px solid red; */
+            }
+            .container {
+                margin-top: 10px;
+                padding: 30px;
+            }
+            .error {
+                color: red;
+                font-weight: bold;
+            }
+
+            .fname, .lname, .gender, .image_path, .sport {
+                display: inline-block;
+                position: relative;
+                left: 30px;
+            }
+
+            .gender {
+                left: 100px;
+            }
+            .image_path {
+                left: 28px;
+            }
+            #header {
+                /* color: SlateBlue ; */
+                display: inline-block;
+            }
+
+            #search {
+                float: right;
+                display: inline-block;
+            }
+
+        </style>
+        <meta charset="utf-8">
+        <title>Index Page</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <script src="https://ajax.googleapis.com/ajax/libs/d3js/5.7.0/d3.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    </head>
+    <body>
+        <div class="container">
+
+        <div class="card">
+          <div class="card-body">
+              <h1 id="header">Add an Athlete</h1>
+              <a href="/search"><button id="search" class="btn btn-info">See images</button></a>
+              <form class="ajaxForm" action="/create" method="post">
+                  {% csrf_token %}
+                  <div class="form-group">
+                      <label for="fname">First Name</label>
+                      <input type="text" name="fname" value="">
+                      {% if messages %}
+                      {% for message in messages %}
+                      {% if "fname" in message.tags %}
+                      <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+                      {% endif %}
+                      {% endfor %}
+                      {% endif %}
+                      <br>
+                      <label for="name">Last Name</label>
+                      <input type="text" name="lname" value="">
+                      {% if messages %}
+                      {% for message in messages %}
+                      {% if "lname" in message.tags %}
+                      <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+                      {% endif %}
+                      {% endfor %}
+                      {% endif %}
+                      <br>
+                      <label for="gender">Gender</label>
+                      <input type="radio" name="gender" value="Male"> Male
+                      <input type="radio" name="gender" value="Female"> Female
+                      {% if messages %}
+                      {% for message in messages %}
+                      {% if "gender" in message.tags %}
+                      <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+                      {% endif %}
+                      {% endfor %}
+                      {% endif %}
+                      <br><br>
+                      <label for="image_path">Image Path</label>
+                      <input type="text" name="image_path" value="">
+                      {% if messages %}
+                      {% for message in messages %}
+                      {% if "image_path" in message.tags %}
+                      <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+                      {% endif %}
+                      {% endfor %}
+                      {% endif %}
+                      <br>
+                      <label for="sport">Sport</label>
+                      <select class="form-control" name="sport">
+                          <option value="Gymnastics">Gymnastics</option>
+                          <option value="Climbing">Climbing</option>
+                          <option value="Tennis">Tennis</option>
+                          <option value="Running">Running</option>
+                          <option value="Boxing">Boxing</option>
+                          <option value="MMA">MMA</option>
+                          <option value="Snowboarding">Snowboarding</option>
+                      </select>
+                      {% if messages %}
+                      {% for message in messages %}
+                      {% if "sport" in message.tags %}
+                      <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+                      {% endif %}
+                      {% endfor %}
+                      {% endif %}
+                      <br>
+                      <input type="submit" class="btn btn-primary" name="" value="Create">
+                  </div>
+
+              </form>
+          </div>
+        </div>
+        <!-- <p>{{athletes}}</p> -->
+        <br>
+        <div class="card">
+          <div class="card-body">
+
+              <p>Use AJAX to fetch <input id="num" type="number" name="num" value=""> records (with the most recent showing up first)</p><br>
+              <!-- <button id="ajaxButton" type="button" class="btn btn-success">Fetch and Display Using AJAX!</button> -->
+
+              <div class="target"></div>
+
+          </div>
+        </div>
+        <br>
+        </div>
+        <script>
+            $(document).ready(function(){
+                // alert("script working")
+                $('#num').keyup(function(event){
+                    // console.log(event);
+                    console.log($('#num').val());
+                    $.ajax({
+                        url: '/athlete_api',
+                        method: 'post',
+                        data: {
+                            'num': $('#num').val()
+                        },
+                        success: function(serverResponse){
+                            console.log(serverResponse);
+                            // $('#target').html(serverResponse);
+                            $('.target').html(serverResponse);
+                        }
+                    });
+                });
+            });
+        </script>
+    </body>
+</html>

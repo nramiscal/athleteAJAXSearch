@@ -1,0 +1,24 @@
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th scope="col">First Name</th>
+      <th scope="col">Last Name</th>
+      <th scope="col">Gender</th>
+      <th scope="col">Sport</th>
+      <!-- <th scope="col">Image Path</th> -->
+    </tr>
+  </thead>
+  <tbody>
+    {% for athlete in athletes %}
+    <tr>
+      <!-- <th scope="row">1</th> -->
+      <td>{{athlete.fname}}</td>
+      <td>{{athlete.lname}}</td>
+      <td>{{athlete.gender}}</td>
+      <td>{{athlete.sport}}</td>
+      <!-- <td>{{athlete.image_path}}</td> -->
+
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>

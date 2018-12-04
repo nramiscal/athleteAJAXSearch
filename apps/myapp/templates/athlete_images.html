@@ -1,0 +1,5 @@
+<!-- <h1>athlete images here...</h1> -->
+
+{% for athlete in athletes %}
+    <img src="{{athlete.image_path}}" alt="{{athlete.fname}} {{athlete.lname}}" style="width:150px;">
+{% endfor %}

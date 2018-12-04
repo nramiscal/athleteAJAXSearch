@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        {% load static %}
+        <link rel="icon" href="{% static 'img/favicon.ico' %}">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <script src="https://ajax.googleapis.com/ajax/libs/d3js/5.7.0/d3.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <meta charset="utf-8">
+        <title>Search Athletes</title>
+        <style media="screen">
+
+            .container {
+                margin-top: 30px;
+            }
+
+            #header1, #header2 {
+                /* color: SlateBlue; */
+            }
+
+        </style>
+    </head>
+    <body>
+        <div class="container">
+
+            <div class="row">
+              <div class="col-sm-3">
+                <div class="card">
+                  <div class="card-body">
+                    <h5 id="header1" class="card-title">Filter Athletes</h5>
+                    <form class="ajaxForm" action="index.html" method="post">
+
+                        <input type="text" id="name" name="name" placeholder="Name">
+                        <br><br>
+                        <div class="form-check">
+                            <input class="form-check-input" name="female" type="checkbox" value="" id="female">
+                            <label class="form-check-label" for="female">Female</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" name="male" type="checkbox" value="" id="male">
+                            <label class="form-check-label" for="male">Male</label>
+
+                        </div>
+                        <p class="card-text"></p>
+                        <h5 id="header2">Sports</h5>
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" name="gymnastics" id="gymnastics">
+                          <label class="form-check-label" for="gymnastics">
+                            Gymnastics
+                          </label>
+                        </div>
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" name="climbing" id="climbing">
+                          <label class="form-check-label" for="climbing">
+                            Climbing
+                          </label>
+                        </div>
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" name="tennis" id="tennis">
+                          <label class="form-check-label" for="tennis">
+                            Tennis
+                          </label>
+                        </div>
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" name="running" id="running">
+                          <label class="form-check-label" for="running">
+                            Running
+                          </label>
+                        </div>
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" name="boxing" id="boxing">
+                          <label class="form-check-label" for="boxing">
+                            Boxing
+                          </label>
+                        </div>
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" name="mma" id="mma">
+                          <label class="form-check-label" for="mma">
+                            MMA
+                          </label>
+                        </div>
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" name="snowboarding" id="snowboarding">
+                          <label class="form-check-label" for="snowboarding">
+                            Snowboarding
+                          </label>
+                        </div>
+                    </form>
+                    <br>
+
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-9">
+                <div class="card">
+                  <div id="target" class="card-body">
+
+                    {% for athlete in athletes %}
+                        <img src="{{athlete.image_path}}" alt="{{athlete.fname}} {{athlete.lname}}" style="width:150px;">
+                    {% endfor %}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <br>
+            <a href="/" class="btn btn-info">Home</a>
+        </div>
+
+        <script type="text/javascript">
+            $(document).ready(function(){
+                // alert("using jquery!")
+
+                function sendAjaxRequest(){
+                    $.ajax({
+                        url: '/athlete_images',
+                        method: 'post',
+                        data: $(".ajaxForm").serialize(),
+                        success: function(serverResponse){
+                            $('#target').html(serverResponse);
+                        }
+                    });
+                };
+
+
+                $(".ajaxForm").change(function(event){
+                    // console.log(event)
+                    event.preventDefault();
+                    sendAjaxRequest();
+                });
+
+                $('#name').keyup(function(event){
+                    event.preventDefault();
+                    sendAjaxRequest();
+                });
+
+
+
+            });
+        </script>
+    </body>
+</html>
